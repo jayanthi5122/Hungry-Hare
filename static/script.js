@@ -167,7 +167,6 @@ async function viewOrders() {
 
     document.getElementById("orders").innerHTML = output;
 }
-<button onclick="viewOrders()">View Order History</button>
 
 // ---------- ORDER HISTORY ----------
 function loadHistory() {
