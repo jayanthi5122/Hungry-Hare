@@ -1,15 +1,18 @@
 import sqlite3
 
-# create database file
+# connect to database
 conn = sqlite3.connect("food_order.db")
 
+# create cursor
 cursor = conn.cursor()
 
-# create users table
+# create products table
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT
+    name TEXT NOT NULL,
+    price REAL NOT NULL,
+    image TEXT
 )
 """)
 
@@ -17,13 +20,16 @@ CREATE TABLE IF NOT EXISTS users (
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS orders (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_name TEXT,
+    customer_name TEXT,
     items TEXT,
     total REAL
 )
 """)
 
+# save changes
 conn.commit()
+
+# close connection
 conn.close()
 
-print("Database created successfully")
+print("Database created successfully!")

@@ -1,45 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hungry Hare</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<script src="{{ url_for('static', filename='script.js') }}"></script></head>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-<body>
+<body class="bg-gray-100">
 
-<h1>🍔 Hungry Hare</h1>
+<nav class="bg-orange-600 text-white px-6 py-4 flex justify-between items-center shadow-lg sticky top-0 z-50">
+    <div class="flex items-center gap-4">
+        <button onclick="toggleMenu()" class="text-3xl font-bold">☰</button>
+        <h1 class="text-2xl md:text-3xl font-bold">Hungry Hare 🍔</h1>
+    </div>
 
-<!-- LOGIN -->
-<div id="loginSection">
-    <h2>Login</h2>
-    <input id="username" placeholder="Enter your name">
-    <button onclick="login()">Login</button>
+    <button onclick="openCart()" class="bg-white text-orange-600 px-5 py-2 rounded-full font-bold">
+        Cart 🛒 <span id="cart-count">0</span>
+    </button>
+</nav>
+
+<div id="mobile-menu" class="hidden bg-orange-500 text-white px-6 py-6 space-y-5 shadow-lg">
+    <a href="{{ url_for('home') }}" class="block text-lg">🏠 Home</a>
+    <a href="#menu" class="block text-lg">🍔 Menu</a>
+    <button onclick="openCart()" class="block text-lg">🛒 Cart</button>
+    <a href="{{ url_for('payment') }}" class="block text-lg">💳 Payment</a>
+    <a href="{{ url_for('careers') }}" class="block text-lg">💼 Careers</a>
+    <a href="#contact" class="block text-lg">📞 Contact</a>
 </div>
 
-<!-- MAIN APP -->
-<div id="app" style="display:none">
+<div id="cart-drawer" class="fixed top-0 right-0 w-full sm:w-96 h-full bg-white shadow-2xl z-[9999] p-6 transform translate-x-full transition duration-300 overflow-y-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-orange-600">Your Cart 🛒</h2>
+        <button onclick="closeCart()" class="text-2xl font-bold">✕</button>
+    </div>
 
-    <h2 id="welcome"></h2>
+    <ul id="cart-items" class="space-y-4 mb-6"></ul>
 
-    <h3>Menu</h3>
-    <div id="menu"></div>
+    <div class="flex justify-between text-2xl font-bold mb-6">
+        <span>Total:</span>
+        <span>€ <span id="cart-total">0.00</span></span>
+    </div>
 
-    <h3>Cart</h3>
-    <div id="cart"></div>
-
-    <h3 id="total">Total: $0</h3>
-
-    <button onclick="checkout()">Checkout</button>
-
-    <h3>Order History</h3>
-    <div id="history"></div>
-
+    <button onclick="checkout()" class="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-full text-xl font-bold">
+        Checkout
+    </button>
 </div>
-<button onclick="viewOrders()">View Order History</button>
 
-<div id="orders"></div>
+<section class="h-[80vh] bg-cover bg-center flex items-center justify-center text-center text-white px-4"
+style="background-image:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ url_for('static', filename='images/hero.jpg') }}');">
 
-<script src="script.js"></script>
+    <div>
+        <h1 class="text-5xl md:text-7xl font-bold mb-6">Delicious Food Delivered Fast 🚀</h1>
+        <p class="text-lg md:text-2xl mb-8">Order your favourite meals anytime, anywhere.</p>
+        <a href="#menu" class="bg-orange-600 hover:bg-red-700 px-8 py-4 rounded-full text-lg font-bold">
+            Order Now
+        </a>
+    </div>
+</section>
+
+<section class="text-center py-14 px-4">
+    <h2 class="text-4xl font-bold text-orange-600 mb-4">Welcome to Hungry Hare!</h2>
+    <p class="text-gray-600 text-lg">Explore your favourite food categories 🍕🍟☕</p>
+</section>
+
+<section id="menu" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-6 pb-16">
+    {% for product in products %}
+    <a href="{{ url_for('category', category_name=product['name']) }}"
+       class="bg-white rounded-3xl overflow-hidden shadow-lg hover:-translate-y-2 hover:shadow-2xl transition">
+
+        <img src="{{ url_for('static', filename=product['image']) }}"
+             alt="{{ product['name'] }}"
+             class="w-full h-60 object-cover">
+
+        <div class="p-5">
+            <h3 class="text-2xl font-bold text-orange-600 mb-3">{{ product['name'] }}</h3>
+            <p class="text-gray-500 mb-5">Explore delicious {{ product['name'] }} options</p>
+            <span class="block text-center bg-orange-600 text-white px-6 py-3 rounded-full font-bold">
+                View Menu
+            </span>
+        </div>
+    </a>
+    {% endfor %}
+</section>
+
+<section id="contact" class="bg-orange-50 py-16 px-6 text-center">
+    <h2 class="text-4xl font-bold text-orange-600 mb-6">Contact Us 📞</h2>
+
+    <div class="max-w-xl mx-auto bg-white rounded-3xl shadow-lg p-8">
+        <input type="text" placeholder="Your Name" class="w-full border p-4 rounded-xl mb-4">
+        <input type="email" placeholder="Your Email" class="w-full border p-4 rounded-xl mb-4">
+        <textarea placeholder="Your Message" rows="5" class="w-full border p-4 rounded-xl mb-4"></textarea>
+        <button class="bg-orange-600 hover:bg-red-700 text-white px-8 py-3 rounded-full font-bold">
+            Send Message
+        </button>
+    </div>
+</section>
+
+<footer class="bg-orange-600 text-white text-center py-6">
+    <p>© 2026 Hungry Hare | Made with ❤️</p>
+</footer>
+
+<script src="{{ url_for('static', filename='cart.js') }}"></script>
 
 </body>
 </html>
