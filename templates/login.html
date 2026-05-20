@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Hungry Hare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-orange-50 min-h-screen flex items-center justify-center">
+
+    <div class="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md">
+
+        <h1 class="text-4xl font-bold text-orange-600 text-center mb-6">
+            Login
+        </h1>
+
+        <form method="POST" class="space-y-5">
+
+            <input 
+            type="email" 
+            name="email" 
+            placeholder="Email"
+            required
+            class="w-full border p-4 rounded-xl">
+
+            <input 
+            type="password" 
+            name="password" 
+            placeholder="Password"
+            required
+            class="w-full border p-4 rounded-xl">
+
+            <button 
+            type="submit"
+            class="w-full bg-orange-600 text-white py-4 rounded-full font-bold">
+                Login
+            </button>
+
+        </form>
+
+        <p class="text-center mt-6">
+            New user?
+            <a href="{{ url_for('register') }}" class="text-orange-600 font-bold">
+                Register
+            </a>
+        </p>
+
+    </div>
+
+</body>
+</html>

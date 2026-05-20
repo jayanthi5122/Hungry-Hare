@@ -2,41 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment | Hungry Hare</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-100">
 
 <nav class="bg-orange-600 text-white px-6 py-4 flex justify-between items-center shadow-lg">
-    <h1 class="text-2xl md:text-3xl font-bold">Hungry Hare 🍔</h1>
-
+    <h1 class="text-2xl font-bold">Hungry Hare 🍔</h1>
     <a href="{{ url_for('home') }}" class="bg-white text-orange-600 px-5 py-2 rounded-full font-bold">
         ← Back Home
     </a>
 </nav>
 
 <section class="min-h-screen flex items-center justify-center px-6">
-    <div class="bg-white rounded-3xl shadow-xl p-8 max-w-lg w-full text-center">
-        <h1 class="text-4xl font-bold text-orange-600 mb-4">Payment 💳</h1>
+    <div class="bg-white max-w-xl w-full p-8 rounded-3xl shadow-xl">
 
-        <p class="text-gray-600 mb-6">
-            Payment integration will be added soon.
+        <h1 class="text-4xl font-bold text-orange-600 mb-4 text-center">
+            Payment 💳
+        </h1>
+
+        <p class="text-gray-600 text-center mb-8">
+            Complete your order securely.
         </p>
 
-        <div class="bg-orange-50 rounded-2xl p-5 text-left mb-6">
-            <p class="font-semibold">Available soon:</p>
-            <ul class="list-disc ml-6 text-gray-600 mt-2">
-                <li>Card payment</li>
-                <li>Cash on delivery</li>
-                <li>Order confirmation</li>
-            </ul>
-        </div>
+        <form class="space-y-5">
 
-        <a href="{{ url_for('home') }}" class="inline-block bg-orange-600 text-white px-8 py-3 rounded-full font-bold">
-            Continue Shopping
-        </a>
+            <input type="text" placeholder="Cardholder Name"
+            class="w-full border p-4 rounded-xl">
+
+            <input type="text" placeholder="Card Number"
+            class="w-full border p-4 rounded-xl">
+
+            <div class="grid grid-cols-2 gap-4">
+                <input type="text" placeholder="MM/YY"
+                class="w-full border p-4 rounded-xl">
+
+                <input type="text" placeholder="CVV"
+                class="w-full border p-4 rounded-xl">
+            </div>
+
+            <button type="button"
+            onclick="alert('Payment successful! Order placed.')"
+            class="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-full text-xl font-bold">
+                Pay Now
+            </button>
+
+        </form>
+
     </div>
 </section>
 

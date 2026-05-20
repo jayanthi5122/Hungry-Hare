@@ -7,10 +7,7 @@ function saveCart() {
 function addToCart(name, price) {
     price = Number(price);
 
-    cart.push({
-        name: name,
-        price: price
-    });
+    cart.push({ name: name, price: price });
 
     saveCart();
     updateCart();
@@ -21,18 +18,15 @@ function updateCart() {
     const cartItems = document.getElementById("cart-items");
     const cartTotal = document.getElementById("cart-total");
     const cartCount = document.getElementById("cart-count");
-    const mobileCartCount = document.getElementById("mobile-cart-count");
 
-    if (!cartItems || !cartTotal) {
-        return;
-    }
+    if (!cartItems || !cartTotal) return;
 
     cartItems.innerHTML = "";
 
     let total = 0;
 
     cart.forEach((item, index) => {
-        total += Number(item.price);
+        total += item.price;
 
         const li = document.createElement("li");
         li.className = "flex justify-between items-center bg-orange-50 p-3 rounded-xl";
@@ -40,12 +34,9 @@ function updateCart() {
         li.innerHTML = `
             <div>
                 <p class="font-semibold">${item.name}</p>
-                <p class="text-sm text-gray-500">€ ${Number(item.price).toFixed(2)}</p>
+                <p class="text-sm text-gray-500">€ ${item.price.toFixed(2)}</p>
             </div>
-
-            <button onclick="removeFromCart(${index})" class="text-red-600 font-bold text-xl">
-                ✕
-            </button>
+            <button onclick="removeFromCart(${index})" class="text-red-600 font-bold text-xl">✕</button>
         `;
 
         cartItems.appendChild(li);
@@ -56,10 +47,6 @@ function updateCart() {
     if (cartCount) {
         cartCount.innerText = cart.length;
     }
-
-    if (mobileCartCount) {
-        mobileCartCount.innerText = cart.length;
-    }
 }
 
 function removeFromCart(index) {
@@ -69,30 +56,15 @@ function removeFromCart(index) {
 }
 
 function openCart() {
-    const drawer = document.getElementById("cart-drawer");
-
-    if (drawer) {
-        drawer.classList.remove("translate-x-full");
-    }
+    document.getElementById("cart-drawer").classList.remove("translate-x-full");
 }
 
 function closeCart() {
-    const drawer = document.getElementById("cart-drawer");
-
-    if (drawer) {
-        drawer.classList.add("translate-x-full");
-    }
+    document.getElementById("cart-drawer").classList.add("translate-x-full");
 }
 
-function toggleMenu(){
-
-    const menu = document.getElementById("mobile-menu");
-
-    if(menu){
-
-        menu.classList.toggle("hidden");
-
-    }
+function toggleMenu() {
+    document.getElementById("mobile-menu").classList.toggle("hidden");
 }
 
 function checkout() {
@@ -101,12 +73,32 @@ function checkout() {
         return;
     }
 
-    alert("Order placed successfully!");
+    let total = cart.reduce((sum, item) => sum + item.price * (item.quantity || 1), 0);
 
-    cart = [];
-    saveCart();
-    updateCart();
-    closeCart();
+    fetch("/checkout", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            cart: cart,
+            total: total
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        cart = [];
+        saveCart();
+        updateCart();
+        window.location.href = "/order-confirmation/" + data.order_id;
+    })
+    .catch(error => {
+        console.error("Checkout error:", error);
+        alert("Something went wrong during checkout.");
+    });
+
+
+    window.location.href = "/payment";
 }
 
 document.addEventListener("DOMContentLoaded", updateCart);

@@ -1,35 +1,58 @@
-import sqlite3
+import mysql.connector
 
-# connect to database
-conn = sqlite3.connect("food_order.db")
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="Jayanthi@5122",
+    database="hungry_hare"
+)
 
-# create cursor
 cursor = conn.cursor()
 
-# create products table
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS products (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    price REAL NOT NULL,
-    image TEXT
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    image VARCHAR(255) NOT NULL
 )
 """)
 
-# create orders table
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) DEFAULT 'user'
+)
+""")
+
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS orders (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    customer_name TEXT,
-    items TEXT,
-    total REAL
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    customer_name VARCHAR(100),
+    total DECIMAL(10,2),
+    status VARCHAR(50) DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 )
 """)
 
-# save changes
-conn.commit()
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS order_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    item_name VARCHAR(100),
+    price DECIMAL(10,2),
+    quantity INT,
+    FOREIGN KEY (order_id) REFERENCES orders(id)
+)
+""")
 
-# close connection
+conn.commit()
+cursor.close()
 conn.close()
 
-print("Database created successfully!")
+print("MySQL tables created successfully!")
