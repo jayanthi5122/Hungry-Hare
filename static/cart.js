@@ -97,8 +97,6 @@ function checkout() {
         alert("Something went wrong during checkout.");
     });
 
-
-    window.location.href = "/payment";
 }
 
 document.addEventListener("DOMContentLoaded", updateCart);

@@ -24,6 +24,19 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("login"))
+
+        if session.get("role") != "admin":
+            return "Access denied. Admins only."
+
+        return f(*args, **kwargs)
+
+    return decorated_function
+
 
 @app.route("/")
 def landing():
@@ -273,6 +286,55 @@ def payment():
 def careers():
     return render_template("careers.html")
 
+@app.route("/admin")
+@admin_required
+def admin_dashboard():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM users")
+    users = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM orders ORDER BY created_at DESC")
+    orders = cursor.fetchall()
+
+    cursor.execute("SELECT * FROM products")
+    products = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template(
+        "admin_dashboard.html",
+        users=users,
+        orders=orders,
+        products=products
+    )
+    
+@app.route("/admin/add-product", methods=["GET", "POST"])
+@admin_required
+def add_product():
+    if request.method == "POST":
+        name = request.form["name"]
+        price = request.form["price"]
+        image = request.form["image"]
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "INSERT INTO products (name, price, image) VALUES (%s, %s, %s)",
+            (name, price, image)
+        )
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return redirect(url_for("admin_dashboard"))
+
+    return render_template("add_product.html")
+
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
