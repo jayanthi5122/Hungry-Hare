@@ -5,7 +5,7 @@ function OrderHistory() {
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState("");
 
- useEffect(() => {
+useEffect(() => {
   const user = JSON.parse(localStorage.getItem("hungryHareUser"));
 
   if (!user) {

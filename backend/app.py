@@ -5,6 +5,7 @@ from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 import mysql.connector
+import os
 
 app = Flask(__name__)
 app.secret_key = "hungry_hare_secret_key"
@@ -36,10 +37,10 @@ app.config["SESSION_COOKIE_SECURE"] = False
 
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Jayanthi@5122",
-        database="hungry_hare"
+        host=os.getenv("MYSQL_HOST", "localhost"),
+        user=os.getenv("MYSQL_USER", "root"),
+        password=os.getenv("MYSQL_PASSWORD", "Jayanthi@5122"),
+        database=os.getenv("MYSQL_DATABASE", "hungry_hare")
     )
 
 
