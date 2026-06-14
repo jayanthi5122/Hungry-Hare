@@ -34,7 +34,7 @@ function Payment() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:5001/api/checkout",
+        "http://13.218.89.254:5001/api/checkout",
         {
           method: "POST",
           headers: {

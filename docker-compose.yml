@@ -5,6 +5,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: "%"
       MYSQL_DATABASE: hungry_hare
     ports:
       - "3307:3306"

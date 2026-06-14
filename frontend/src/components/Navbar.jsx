@@ -4,7 +4,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   async function logout() {
-    await fetch("http://127.0.0.1:5001/api/logout", {
+    await fetch("http://13.218.89.254:5001/api/logout", {
       method: "POST",
       credentials: "include",
     });

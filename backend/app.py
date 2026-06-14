@@ -26,7 +26,8 @@ CORS(
         r"/api/*": {
             "origins": [
                 "http://127.0.0.1:5173",
-                "http://localhost:5173"
+                "http://localhost:5173",
+                "http://13.218.89.254:5173"
             ]
         }
     }

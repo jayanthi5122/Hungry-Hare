@@ -7,7 +7,7 @@ function Home() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5001/api/products", {
+    fetch("http://13.218.89.254:5001/api/products", {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -66,7 +66,7 @@ function Home() {
         className="bg-white rounded-3xl shadow-lg overflow-hidden hover:-translate-y-2 transition"
       >
         <img
-          src={`http://127.0.0.1:5001/static/${product.image}`}
+          src={`http://13.218.89.254:5001/static/${product.image}`}
           className="w-full h-52 object-cover"
         />
 

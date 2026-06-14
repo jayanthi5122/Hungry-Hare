@@ -8,7 +8,7 @@ function Category() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5001/api/category/${categoryName}`, {
+    fetch(`http://13.218.89.254:5001/api/category/${categoryName}`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -79,7 +79,7 @@ function Category() {
                 className="bg-white rounded-3xl shadow-lg overflow-hidden hover:-translate-y-2 transition"
               >
                 <img
-                  src={`http://127.0.0.1:5001/static/${item.image}`}
+                  src={`http://13.218.89.254:5001/static/${item.image}`}
                   alt={item.name}
                   className="w-full h-56 object-cover"
                 />

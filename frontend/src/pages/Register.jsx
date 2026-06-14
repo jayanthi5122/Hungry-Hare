@@ -20,7 +20,7 @@ function Register() {
     setError("");
 
     try {
-      const response = await fetch("http://127.0.0.1:5001/api/register", {
+      const response = await fetch("http://13.218.89.254:5001/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

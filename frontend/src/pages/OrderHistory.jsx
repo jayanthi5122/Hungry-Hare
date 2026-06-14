@@ -13,7 +13,7 @@ useEffect(() => {
     return;
   }
 
-  fetch(`http://127.0.0.1:5001/api/orders?user_id=${user.id}`)
+  fetch(`http://13.218.89.254:5001/api/orders?user_id=${user.id}`)
     .then((res) => res.json())
     .then((data) => setOrders(data))
     .catch(() => setError("Could not load orders."));
